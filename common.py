@@ -1,20 +1,20 @@
-import pymysql,pandas as pd,requests,re,json
+import pymysql,pandas as pd,requests,re,json,yaml,os
 
 class Common:
     @classmethod
-    def Conn(self,host,database):
+    def Conn(cls,host,port,database,user,password):
         conn = pymysql.connect(
-            user='naliworld',  # 用户名
-            password='password!',  # 密码：这里一定要注意123456是字符串形式
+            user=user,  # 用户名
+            password=password,  # 密码：这里一定要注意123456是字符串形式
             host=host,  # 指定访问的服务器，本地服务器指定“localhost”，远程服务器指定服务器的ip地址
             database=database,  # 数据库的名字
-            port=3306,  # 指定端口号，范围在0-65535
+            port=port,  # 指定端口号，范围在0-65535
             charset='utf8',  # 数据库的编码方式
         )
         return conn
     @classmethod
-    def execute_sql(self,host,database,sql):
-        conn=self.Conn(host,database)
+    def execute_sql(cls,host,port,user,password,database,sql):
+        conn=cls.Conn(host,port,user,password,database)
         cursor = conn.cursor()
         cursor.execute(sql)
         da=cursor.fetchone()
@@ -24,8 +24,8 @@ class Common:
         conn.commit()
         return da
     @classmethod
-    def read_sql(self,host,database,sql):
-        conn=self.Conn(host,database)
+    def read_sql(self,host,port,user,password,database,sql):
+        conn=self.Conn(host,port,user,password,database)
         df = pd.read_sql(sql,con=conn)
         return df
 
@@ -46,5 +46,19 @@ class Common:
         #     if arr.find('JSESSIONID') >= 0 or arr.find('bl0gm1HBTB') >= 0:
         #         cookieValue += arr + ';'
         return cookieValue
+    # 读取data.yaml文件中的数据
+    @classmethod
+    def get_data(cls):
+        yaml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data.yaml")
+        print(yaml_path)
+        try:
+            # 打开文件
+            with open(yaml_path, "r", encoding="utf-8") as f:
+                data = yaml.load(f, Loader=yaml.FullLoader)
+                print(type(data))
+                return data
+        except Exception as e:
+            return  e
+            # return None
 if __name__ == '__main__':
-    print(Common.getCookie())
+    print(Common.get_data())

@@ -1,0 +1,23 @@
+#数据库配置文件
+host1:
+  192.168.60.11
+port1:
+  3306
+user:
+  naliworld
+password:
+  password!
+lamia: #库
+  音频开播权限:
+    tb_live_room
+  视频开播权限: #表
+    tb_live_room_auth
+  用户实名认证:
+    tb_live_verify_user_info
+diablo:
+  课程直播白名单:
+    tb_white_ancho
+
+
+
+
