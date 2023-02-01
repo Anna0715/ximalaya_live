@@ -6,7 +6,7 @@ app = Flask(__name__)#创建一个服务，赋值给APP
 datas=Common.get_data()
 @app.route("/")
 def index():
-    return "hello world 20210915!!"
+    return "annatest!!"
 # 主播实名认证+开通视频&卖货权限
 @app.route('/AddVprofileVerify',methods=['post'])
 def Certification():
@@ -36,9 +36,9 @@ if __name__ == '__main__':
     try:
         for name in interfaces():
             addresses = [i['addr'] for i in ifaddresses(name).setdefault(AF_INET, [{'addr': 'No IP '}])][0]
-        app.run(host='0.0.0.0', port=5051, debug=False,threaded=True)
+        app.run(host='0.0.0.0', port=7169, debug=False,threaded=True)
     except Exception:
         addresses = '127.0.0.1'
-        app.run(host='0.0.0.0', port=5051, debug=False,threaded=True)
+        app.run(host='0.0.0.0', port=7169, debug=False,threaded=True)
 
 
