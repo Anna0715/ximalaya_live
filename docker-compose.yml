@@ -1,0 +1,13 @@
+version: '2'
+services:
+  mldong-devops-flask-demo:
+    environment:
+      - VERSION=${BUILD_NUMBER}  
+    container_name: mldong-devops-flask-demo     # 容器名称
+    image: ${docker_url}        # 镜像版本
+    restart: always           # docker重启后，该容器也重启
+    volumes:                  # 目录挂载
+      - "/etc/localtime:/etc/localtime:ro" # (左为宿主，右为容器)
+    ports:
+      - "5000:5000"           # 端口映射(左为宿主，右为容器)
+    command: ["uwsgi","uwsgi.ini"]

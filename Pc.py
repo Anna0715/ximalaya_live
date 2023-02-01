@@ -1,11 +1,9 @@
+import datetime
 import random,requests,json,time
-from flask import Flask,jsonify,request,Blueprint
+from client import open_goods
 from common import Common
-Pc=Blueprint('Pc',__name__)
-app = Flask(__name__)#创建一个服务，赋值给APP
 datas=Common.get_data()
 # 添加课程直播白名单
-@app.route('/AddCourselivewhitelist',methods=['post'])
 def addCourselivewhitelist(uids):
     uids=uids.split(',')
     database='diablo'
@@ -24,61 +22,22 @@ def addCourselivewhitelist(uids):
                 df = Common.read_sql(datas['host1'], datas['port1'], database, datas['user'], datas['password'],sql2)
                 # 断言
                 if df.empty:
-                    print('失败')
+                    return "fail"
                 else:
-                    print('成功')
+                    return "success"
             else:
                 if da[0]==0:
-                    print('已存在')
+                    return "success"
     except Exception as e:
-        print(e)
+        return e
 # 开通卖货白名单
-def open_goods(uids):
-    uids = uids.split(',')
-    database = 'diablo'
-    try:
-        for uid in uids:
-            uid = int(uid)
-            da = Common.execute_sql(datas['host1'], datas['port1'], database, datas['user'], datas['password'],
-                                    "INSERT INTO tb_white_anchor_new('uid') VALUES(%d)"%(uid))
-            # pd.set_option('display.max_columns', None)
-            sub_categoryId = random.randint(100001, 100009)
-            # 判断主播是否已开通权限
-            if da == None:
-                sql1 = "INSERT INTO tb_white_anchor (uid,apply_name,dept_name,reason,ops_id,created_at,updated_at,sub_categoryId,is_deleted,audit_director) " \
-                       "VALUES(%d, 'autotest', '互娱', '加入白名单', 1,now(), now(), %d, 0, '张柔' )" % (
-                       uid, sub_categoryId)
-                da = Common.execute_sql(datas['host1'], datas['port1'], database, datas['user'], datas['password'],
-                                        sql1)
-                sql2 = 'SELECT * FROM tb_white_anchor where uid=%d' % (uid)
-                df = Common.read_sql(datas['host1'], datas['port1'], database, datas['user'], datas['password'], sql2)
-                # 断言
-                if df.empty:
-                    print('失败')
-                else:
-                    print('成功')
-            else:
-                if da[0] == 0:
-                    print('已存在')
-    except Exception as e:
-        print(e)
 # 创建课程直播
-@app.route('/Createcourselive',methods=['post'])
-def Create_course_live():
-    # 开通课程直播白名单
-    uids=request.json.get('uid')
+def create_course_live(uids,coursetype,Mtime,Altime,price):
     # 开通课程直播白名单
     addCourselivewhitelist(uids)
     # 开通主播卖货白名单
     open_goods(uids)
     uids=uids.split(',')
-    # 直播类型：测试、正式、付费
-    coursetype=request.json.get('coursetype')
-    # 直播开始时间，当时时间+min
-    Mtime=request.json.get('Mtime')
-    Altime=request.json.get('Altime')
-    price=request.json.get('price')
-    # uids='1294839'
     headers = {
         'Accept': '*/*',
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-US;q=0.7,en-GB;q=0.6',
@@ -93,22 +52,25 @@ def Create_course_live():
     # 默认付费类型
     isPaid="false"
     isTest="false"
+    clearRate=0
     detailDescription = "http://audiotest.cos.tx.xmcdn.com/storages/6729-audiotest/1F/95/GKwaCHkHfw1CAAhAOwAAmwrL.jpeg"
     for uid in uids:
-        timestamp=int(time.time())
-        startime = timestamp - timestamp % (Mtime * 60) + (Mtime * 60)
-        endtime = timestamp - timestamp % ((Mtime+Altime) * 60) + ((Mtime+Altime) * 60)
-        if coursetype=='付费':
+        m=(datetime.datetime.now()+datetime.timedelta(minutes=Mtime)).strftime("%Y-%m-%d %H:%M:%S")
+        e=(datetime.datetime.now()+datetime.timedelta(minutes=Mtime+Altime)).strftime("%Y-%m-%d %H:%M:%S")
+        startime=int(round(time.mktime(time.strptime(m,'%Y-%m-%d %H:%M:%S'))*1000))
+        endtime = int(round(time.mktime(time.strptime(e,'%Y-%m-%d %H:%M:%S'))*1000))
+        if coursetype=="付费直播":
             isPaid = "true"
-        if coursetype=='测试':
+            clearRate=50
+        if coursetype=="测试直播":
             isTest="true"
             detailDescription ="null"
-        if coursetype == '正式':
+        if coursetype == '正式直播':
             pass
         param={
         "input": {
             "roomId": 100001, #房间id
-            "name": coursetype+"直播",
+            "name": coursetype,
             "coverPath": "http://audiotest.cos.tx.xmcdn.com/storages/6729-audiotest/1F/95/GKwaCHkHfw1CAAhAOwAAmwrL.jpeg",
             "uid": uid,
             "description": "课程直播测试",
@@ -121,28 +83,23 @@ def Create_course_live():
             "openGoods": "true",
             "detailDescription": detailDescription,
             "isPaid": isPaid,
-            "clearRate": 0,
+            "clearRate":clearRate,
             "price": price,
+            "startAt":startime,
+            "endAt":endtime
         }
     }
         # "{\\n\\"input\\": {\\n\\"roomId\\": 100001,\\n\\"name\\": \\"test\\",\\n\\"coverPath\\": \\"http://audiotest.cos.tx.xmcdn.com/storages/6729-audiotest/1F/95/GKwaCHkHfw1CAAhAOwAAmwrL.jpeg\\",\\n\\"uid\\": 1294839,\\n\\"startAt\\": 1673946600000,\\n\\"description\\": \\"张柔直播测试\\",\\n\\"endAt\\": 1673950200000,\\n\\"categoryId\\": 100101,\\n\\"showPlayback\\": \\"false\\",\\n\\"isAutoPull\\": \\"false\\",\\n\\"non_recommended\\": \\"true\\",\\n\\"isTest\\": \\"true\\",\\n\\"pushStreamType\\": 1,\\n\\"openGoods\\": \\"false\\",\\n\\"isPaid\\": \\"false\\",\\n \\"clearRate\\": 0\\n}\\n}"
         data = {
             'params': '{"group":"diablo-live","scope":"default","url":"","iface":"com.ximalaya.diablo.live.business.api.thrift.TDiabloLiveService$Iface","artifactId":"diablo-live-business-api","method":"createLive","authAapplication":"","isPeakReq":false,"params":%s}'%param,
         }
+        print(param)
         re = requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=data,verify=False)
     #     获取code的内容
         content=json.loads(re.text)['content']
-    return jsonify(content)
+    return content
     # return json.loads(content)
+# 公会
+"""创建公会账号:成立条件：aima.tb_family表里有数据且有蓝v认证"""
 if __name__ == '__main__':
-    # print(addCourselivewhitelist('1288819,1298487,1298488,1298489'))
-    from netifaces import interfaces, ifaddresses, AF_INET
-    addresses = ''
-    try:
-        for name in interfaces():
-            addresses = [i['addr'] for i in ifaddresses(name).setdefault(AF_INET, [{'addr': 'No IP '}])][0]
-        app.run(host=addresses, port=8803, debug=False)
-    except Exception:
-        addresses = '127.0.0.1'
-        app.run(host=addresses, port=8803, debug=False)
-    # print(Create_course_live())
+    pass

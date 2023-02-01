@@ -14,9 +14,14 @@ lamia: #库
     tb_live_room_auth
   用户实名认证:
     tb_live_verify_user_info
+  公会账号创建:
+    tb_family
 diablo:
   课程直播白名单:
     tb_white_ancho
+reserve:
+  卖货权限白名单:
+    tb_white_anchor_new
 
 
 

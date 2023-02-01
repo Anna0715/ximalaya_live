@@ -1,3 +1,10 @@
-co="{\n\t\"showPlayback\":false,\n\t\"itingUrl\":\"iting://open?msg_type=201&live_id=765763\",\n\t\"coverPath\":\"http://audiotest.cos.tx.xmcdn.com/storages/6729-audiotest/1F/95/GKwaCHkHfw1CAAhAOwAAmwrL.jpeg\",\n\t\"code\":0,\n\t\"description\":\"课程直播测试\",\n\t\"roomId\":100001,\n\t\"uid\":1294839,\n\t\"isTest\":true,\n\t\"name\":\"测试直播\",\n\t\"openGoods\":true,\n\t\"id\":765763,\n\t\"categoryId\":100101,\n\t\"status\":5\n}"
+import datetime
+import time
 
-print(co.strip("\n"))
+timestamp=int(round(time.time()*1000))
+startime = timestamp - timestamp % (10 * 60) + (10 * 60)
+endtime = timestamp - timestamp % ((20) * 60) + ((20) * 60)
+print(startime,endtime)
+m=(datetime.datetime.now()+datetime.timedelta(minutes=20)).strftime("%Y-%m-%d %H:%M:%S")
+s=int(round(time.mktime(time.strptime(m,'%Y-%m-%d %H:%M:%S'))*1000))
+print(m,s,(datetime.datetime.now()+datetime.timedelta(minutes=20)))
