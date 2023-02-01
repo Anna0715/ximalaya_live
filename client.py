@@ -48,8 +48,10 @@ def certification(uids,cookie,isOpenlvb,isOpenGoods):
                 di["code"] = 203
             data.append(di)
             # 构造字典格式的返回响应
+            ress["code"] = 200
             ress["data"]=data
             ress["msg"]="请求成功"
+
         return ress
         # return jsonify(res.json())
     except Exception as e:
