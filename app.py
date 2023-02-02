@@ -31,14 +31,9 @@ def Create_course_live():
     ress=create_course_live(uids,coursetype,Mtime,Altime,price)
     return jsonify(ress)
 if __name__ == '__main__':
-    from netifaces import interfaces, ifaddresses, AF_INET
-    addresses = ''
-    try:
-        for name in interfaces():
-            addresses = [i['addr'] for i in ifaddresses(name).setdefault(AF_INET, [{'addr': 'No IP '}])][0]
-        app.run(host='0.0.0.0', port=7169, debug=False,threaded=True)
-    except Exception:
-        addresses = '127.0.0.1'
-        app.run(host='0.0.0.0', port=7169, debug=False,threaded=True)
+    # 本地调试
+    # app.run(host='0.0.0.0', port=7169, debug=False,threaded=True)
+    server=pywsgi.WSGIServer(('0.0.0.0',8000),app)
+    server.serve_forever()
 
 

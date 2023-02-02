@@ -1,6 +1,6 @@
 #!/bin/bash
 
-main_dir="$(cd `dirname $0`; pwd)"
+main_dir="$(cd `ximalaya_live $0`; pwd)"
 
 version=$1
 
