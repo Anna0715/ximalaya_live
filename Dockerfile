@@ -14,7 +14,7 @@ RUN pip install --upgrade pip && pip3 install -r requirement
 # 进入镜像工作目录
 WORKDIR /ximalaya_live
 
-CMD python app.py
+CMD python main.py
 
 ###COPY ximalaya_live /usr/local/tfs-publish/ximalaya_live
 ###更改权限至最高等级
@@ -24,7 +24,7 @@ CMD python app.py
 ###进入以下工作目录
 ##WORKDIR /ximalaya_live
 ###运行文件
-##CMD python app.py
+##CMD python main.py
 #FROM harbor102.test.ximalaya.com/common/growth-custom-python3-base:v0.0.1
 
 #COPY ./ximalaya_live/* ./release
