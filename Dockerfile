@@ -3,16 +3,16 @@
 FROM harbor102.test.ximalaya.com/common/growth-custom-python3-base:v0.0.1
 #打上个人标签
 MAINTAINER dx_content<rou.zhang@ximalaya.com>
-mkdir release
-RUN mkdir -p /release
+mkdir ximalaya_live
+RUN mkdir -p /ximalaya_live
 # 拷贝当前目录所有的文件，进入 docker 镜像中
-COPY ./ximalaya_live/* ./release
+COPY ./ximalaya_live/* ./ximalaya_live
 #添加权限
-RUN chmod +x /release/run.sh && sh /release/run.sh
+RUN chmod +x /ximalaya_live/run.sh && sh /ximalaya_live/run.sh
 #在镜像内安装依赖包
 RUN pip install --upgrade pip && pip3 install -r requirement
 # 进入镜像工作目录
-WORKDIR /release
+WORKDIR /ximalaya_live
 
 CMD python app.py
 
