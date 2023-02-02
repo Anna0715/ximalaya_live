@@ -21,4 +21,4 @@ while true; do sleep 1; done
 #        exec ${currentdir}/run.sh >>$run_log 2>&1 &
 #        echo "start completed"
 #}
-start
+#start
