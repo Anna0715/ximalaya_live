@@ -58,7 +58,7 @@ def certification(uids,isOpenlvb,isOpenGoods):
             ress["code"] = 500
             ress["data"] = []
             ress["msg"] = "请求失败，请重试"
-        return ress
+    return ress
 
 
 # 直播实名认证

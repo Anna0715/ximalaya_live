@@ -31,21 +31,18 @@ def login():
 # 主播实名认证+开通视频&卖货权限
 @app.route('/AddVprofileVerify',methods=['POST'])
 def Certification():
-    # data = json.loads(request.form.get('data'))
     data = json.loads(request.get_data())
-    # print(request.form.get('data'))
-    uids=data['uid']
-    isOpenlvb=data['isOpenlvb']
-    isOpengoods=data['isOpengoods']
-    # uids=request.form.get('uid')
-    # cookie=request.form.get('cookie')
-    # isOpenlvb=request.form.get('isOpenlvb')
-    # isOpengoods=request.form.get('isOpengoods')
+    uids = data['uid']
+    isOpenlvb = data['isOpenlvb']
+    isOpengoods = data['isOpengoods']
+    if isOpenlvb==None:
+        isOpenlvb=False
+    if isOpengoods==None:
+        isOpengoods=False
     # uids = request.json.get('uid')
-    # cookie = request.json.get('cookie')
     # True:不开通 False：开通
     # isOpenlvb = request.json.get('isOpenlvb')
-    # isOpenGoods = request.json.get('isOpengoods')
+    # isOpengoods = request.json.get('isOpengoods')
     ress=certification(uids,isOpenlvb,isOpengoods)
     return jsonify(ress)
 # 创建课程直播
@@ -63,7 +60,7 @@ def Create_course_live():
     return jsonify(ress)
 if __name__ == '__main__':
     # 本地调试
-    app.run(host='0.0.0.0', debug=False,threaded=True)
+    app.run(host='0.0.0.0', port=8000,debug=False,threaded=True)
     # server=pywsgi.WSGIServer(('0.0.0.0',8000),app)
     # server.serve_forever()
 
