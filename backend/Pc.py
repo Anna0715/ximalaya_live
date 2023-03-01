@@ -189,8 +189,7 @@ def create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,e
 新主播结算类型表:tb_anchor_clearing_type
 """
 #创建公会账号
-"""
-"""
+
 def create_family_account():
     # 提交入驻资料申请
     sql1="INSERT INTO `tb_family_enter_apply_info` (`uid`, `warrent_person_info_id`, `company_id`, `family_info_id`, `contract_id`, `anchor_verify_center_status`, `verify_center_status`, `status`, `warrent_person_info_status`, `company_info_status`, `family_info_status`, `ops_id`, `operator`, `verify_refuse_reason`, `filed_time`, `created_at`, `updated_at`, `operator_ops_id`, `request_enterprise_reg_fail_msg`, `anchor_verify_center_update_time`) " \
