@@ -35,9 +35,10 @@ def Certification():
     uids = data['uid']
     isOpenlvb = data['isOpenlvb']
     isOpengoods = data['isOpengoods']
-    if isOpenlvb==None:
+    print(isOpenlvb)
+    if isOpenlvb==" ":
         isOpenlvb=False
-    if isOpengoods==None:
+    if isOpengoods==" ":
         isOpengoods=False
     # uids = request.json.get('uid')
     # True:不开通 False：开通
@@ -46,22 +47,30 @@ def Certification():
     ress=certification(uids,isOpenlvb,isOpengoods)
     return jsonify(ress)
 # 创建课程直播
-@app.route('/CreatecourseLive',methods=['post'])
-def Create_course_live():
+@app.route('/CreateCourseLive',methods=['post'])
+def Create_Course_live():
     data = json.loads(request.get_data())
     uids=data['uid']
-    # 直播类型：测试直播、正式直播、付费直播
+    # 直播类型：测试、正式、付费
     coursetype=data['coursetype']
-    # 直播开始时间，当时时间+min
-    Mtime=data['Mtime']
-    Altime=data['Altime']
+    openGoods = data['openGoods']
+    openGift = data['openGift']
+    showPlayback=data['showPlayback']
+    try:
+        startAt=data['startAt']
+        endAt = data['endAt']
+    except:
+        startAt = (datetime.datetime.now() + datetime.timedelta(minutes=20)).strftime("%Y-%m-%d %H:%M:%S")
+        endAt = (datetime.datetime.now() + datetime.timedelta(minutes=50)).strftime("%Y-%m-%d %H:%M:%S")
     price=data['price']
-    ress=create_course_live(uids,coursetype,Mtime,Altime,price)
+    quantity=data['quantity']
+    clearRate = data['clearRate']
+    ress=create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,endAt,price,quantity,clearRate)
     return jsonify(ress)
 if __name__ == '__main__':
     # 本地调试
-    app.run(host='0.0.0.0', port=8000,debug=False,threaded=True)
-    # server=pywsgi.WSGIServer(('0.0.0.0',8000),app)
-    # server.serve_forever()
+    # app.run(host='0.0.0.0', port=8000,debug=False,threaded=True)
+    server=pywsgi.WSGIServer(('0.0.0.0',80),app)
+    server.serve_forever()
 
 

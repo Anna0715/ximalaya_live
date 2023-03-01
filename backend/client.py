@@ -1,4 +1,6 @@
 import json,random,requests
+import time
+
 from common import Common
 datas=Common.get_data()
 # 主播实名认证
@@ -21,17 +23,6 @@ def certification(uids,isOpenlvb,isOpenGoods):
         try:
             di={}
             di["uid"] = uid
-            # 返回的响应请求结果生成键值对添加到data中
-            if isOpenlvb == True:
-                openlvb_status = Openlv(uid)
-                di['Openlv'] = openlvb_status
-            else:
-                di['Openlv'] = "false"
-            if isOpenGoods == True:
-                opengoods_status = open_goods(uid)
-                di["OpenGoods"] = opengoods_status
-            else:
-                di["OpenGoods"] = "false"
             # 生成随机身份证号
             idCard="511303" + str(random.randint(1970, 2003)) + "0" + str(random.randint(1, 9)) + str(
                 random.randint(10, 30)) + "1981"
@@ -39,7 +30,6 @@ def certification(uids,isOpenlvb,isOpenGoods):
                     "vstatus":"1","vtype":"1","gender": 1,"phone": "16621325482","email":"16621325482@163.com","qq":"13017533238",
                     "address": "dsafadsf","ageRange":"fadsf","realName":"anna","idCard":idCard,"idCardPath":"234234",
                     "vChannel": "1","cardType":"二代身份证","uname":"anna"},"opsId": 22866}
-            print(params)
             datas = {
                 'params': '{"group":"anchor-verify","scope":"default","url":"","iface":"com.ximalaya.anchor.verify.thrift.AnchorVerifyService$Iface","artifactId":"anchor-verify-api","method":"quickAddAnchorVprofileVerify","authAapplication":"","isPeakReq":false,"params":%s}'%params,
         }
@@ -51,6 +41,17 @@ def certification(uids,isOpenlvb,isOpenGoods):
                 di["profileVerify"]='success'
             else:
                 di["profileVerify"]=json.loads(json.loads(re.text)['content'])['errorMsg']
+            # 返回的响应请求结果生成键值对添加到data中
+            if isOpenlvb == True:
+                openlvb_status = Openlv(uid)
+                di['Openlvb'] = openlvb_status
+            else:
+                di['Openlvb'] = "false"
+            if isOpenGoods == True:
+                opengoods_status = open_goods(uid)
+                di["OpenGoods"] = opengoods_status
+            else:
+                di["OpenGoods"] = "false"
             ress["code"] = 200
             ress["data"] = data
             ress["msg"] = "请求成功"
@@ -59,8 +60,6 @@ def certification(uids,isOpenlvb,isOpenGoods):
             ress["data"] = []
             ress["msg"] = "请求失败，请重试"
     return ress
-
-
 # 直播实名认证
 """
 数据库sql：
@@ -72,7 +71,7 @@ set live_verify_user_cmp_1298182 15  批量set命令：mset key1 value1 key2   v
 """
 # 开通视频直播权限
 """往表tb_live_room_auth里插入数据roomid=id"""
-# 开通视频权限
+# 开通视直播权限
 def Openlv(uid):
 #     连接数据库
     database='lamia'
@@ -82,9 +81,9 @@ def Openlv(uid):
     if id!=None:
         roomid=id[0]
     else:
-        return "fail"
+        return "音频权限fail"
     # print(type(uid),type(roomid))
-    sql2='select * from tb_live_room_auth where room_id=%d'%int(roomid)
+    sql2='select deleted from tb_live_room_auth where room_id=%d'%int(roomid)
     df=Common.read_sql(datas['host1'],datas['port1'],'lamia',datas['user'],datas['password'],sql2)
     # 判断用户是否已开通视频权限
     if df.empty:
@@ -95,9 +94,43 @@ def Openlv(uid):
         if df.empty:
             return "fail"
         else:
+            headers = {
+                'Accept': '*/*',
+                'Accept-Language': 'zh-CN,zh;q=0.9,en-GB;q=0.8,en;q=0.7',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Origin': 'http://192.168.3.54:8901',
+                'Proxy-Connection': 'keep-alive',
+                'Referer': 'http://192.168.3.54:8901/thriftTester/index.html',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+
+            data = {
+                'params': '{"group":"lamia-base","scope":"default","url":"","iface":"com.ximalaya.lamia.base.business.api.thrift.TLamiaBaseService$Iface","artifactId":"lamia-base-business-api","method":"reloadByUids","authAapplication":"","isPeakReq":false,"params":"{\\n  \\"uids\\": [%d]\\n}"}' % uid,
+            }
+            response = requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=data,
+                                     verify=False)
+            print(response.content)
             return "success"
     # 用户已开通视频权限直接返回
     else:
+        headers = {
+            'Accept': '*/*',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en-GB;q=0.8,en;q=0.7',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': 'http://192.168.3.54:8901',
+            'Proxy-Connection': 'keep-alive',
+            'Referer': 'http://192.168.3.54:8901/thriftTester/index.html',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+
+        data = {
+            'params': '{"group":"lamia-base","scope":"default","url":"","iface":"com.ximalaya.lamia.base.business.api.thrift.TLamiaBaseService$Iface","artifactId":"lamia-base-business-api","method":"reloadByUids","authAapplication":"","isPeakReq":false,"params":"{\\n  \\"uids\\": [%d]\\n}"}' % uid,
+        }
+        response = requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=data,
+                                 verify=False)
+        print(response.content)
         return "success"
 # 用户侧实名
 """sql：
@@ -129,4 +162,5 @@ def open_goods(uid):
     except Exception as e:
         return "fail"
 if __name__ == '__main__':
-    print(certification('565,322',"false","false"))
+    # print(certification('565,322',"false","false"))
+    Openlv(1304325)

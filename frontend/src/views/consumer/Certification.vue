@@ -141,7 +141,7 @@ export default {
                     uid: item?.uid,
                     isCertification: item?.profileVerify,
                     openSale: item?.OpenGoods,
-                    openVedio: item?.Openlv
+                    openVedio: item?.Openlvb
                   })
                   if (item?.profileVerify) {
                     successCount += 1
