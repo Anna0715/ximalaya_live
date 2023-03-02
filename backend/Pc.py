@@ -66,7 +66,6 @@ def create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,e
     isPaid="false"
     detailDescription=" "
     method="createLive"
-    name=str(datetime.datetime.now().month)+'-'+str(datetime.datetime.now().day)+'造数'+coursetype+'直播'
     # 正式测试直播默认值
     Referer='http://192.168.3.54:8901/thriftTester/?iface=com.ximalaya.live.fans.club.api.thrift.TFansClubService$Iface&artifactId=live-fans-club-api&group=live-fans-club&scope=default&ip=172.26.6.141&port=2108&method=setRelationNoActive&reqParam=%7B%0A%20%20%22fansUid%22%3A%201244267%2C%0A%20%20%22anchorUid%22%3A%201155190%0A%7D'
     if coursetype == "付费":
@@ -107,6 +106,7 @@ def create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,e
     # 转时间戳(毫秒)
     startime = int(round(time.mktime(time.strptime(startAt, '%Y-%m-%d %H:%M:%S')) * 1000))
     endtime = int(round(time.mktime(time.strptime(endAt, '%Y-%m-%d %H:%M:%S')) * 1000))
+    name = str(startime) + '造数' + coursetype + '直播'
     ress={}
     data=[]
     try:
