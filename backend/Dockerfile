@@ -1,7 +1,7 @@
 #FROM python:3.8.0-stretch
 #拉取原始镜像
-FROM centos:7
-#FROM harbor102.test.ximalaya.com/test
+#FROM centos:7
+FROM silverlogic/python3.6
 #打上个人标签
 MAINTAINER dx_content<rou.zhang@ximalaya.com>
 #创建工作目录
