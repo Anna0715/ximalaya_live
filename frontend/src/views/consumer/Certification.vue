@@ -39,13 +39,11 @@
       </template>
       <template slot="openVedio" slot-scope="item">
         <a-icon type="check-circle" theme="filled" style="color:#52c41a" v-if="item === 'success'" />
-        <a-icon type="close-circle" theme="filled" v-if="item === 'fail'" />
-        <span v-if="item === 'false'">/</span>
+<!--        <a-icon type="close-circle" theme="filled" style="color:#FF3300" v-else />-->
       </template>
       <template slot="openSale" slot-scope="item">
         <a-icon type="check-circle" theme="filled" style="color:#52c41a" v-if="item === 'success'" />
-        <a-icon type="close-circle" theme="filled" v-if="item === 'fail'" />
-        <span v-if="item === 'false'">/</span>
+<!--        <a-icon type="close-circle" theme="filled" style="color:#FF3300" v-else />-->
       </template>
     </a-table>
 
