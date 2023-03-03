@@ -7,7 +7,7 @@ MAINTAINER dx_content<rou.zhang@ximalaya.com>
 #创建工作目录
 RUN mkdir -p /release
 # 拷贝当前目录所有的文件，进入 docker 镜像中
-ADD  ./ximalaya_live  /release
+COPY  ./ximalaya_live  ./release
 #添加权限
 RUN #chmod u+x /release && sh /release
 RUN chmod u+x /release
