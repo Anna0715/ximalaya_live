@@ -1,6 +1,6 @@
 #FROM python:3.8.0-stretch
 #拉取原始镜像
-FROM centos
+FROM centos:7
 #FROM harbor102.test.ximalaya.com/test
 #打上个人标签
 MAINTAINER dx_content<rou.zhang@ximalaya.com>
