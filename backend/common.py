@@ -60,5 +60,8 @@ class Common:
         except Exception as e:
             return  e
             # return None
+    @classmethod
+    def get_cookie(cls):
+        pass
 if __name__ == '__main__':
     print(Common.get_data())

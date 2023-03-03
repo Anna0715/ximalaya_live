@@ -19,15 +19,15 @@ def index():
 # 登陆接口
 @app.route('/login', methods=['GET'])
 def login():
-    redirect_uri = request.args.get('redirect_uri')
-    if redirect_uri is None or len(redirect_uri) == 0:
-        HTTPException('redirect_uri 参数必传')
+    redirect_url = request.args.get('redirect_url')
+    if redirect_url is None or len(redirect_url) == 0:
+        HTTPException('redirect_url 参数必传')
     else:
         try:
-            return redirect(redirect_uri)
+            return redirect(redirect_url)
         except Exception as e:
-            HTTPException('重定向[{}]失败'.format(redirect_uri), e)
-            raise HTTPException('重定向[{}]失败！'.format(redirect_uri))
+            HTTPException('重定向[{}]失败'.format(redirect_url), e)
+            raise HTTPException('重定向[{}]失败！'.format(redirect_url))
 # 主播实名认证+开通视频&卖货权限
 @app.route('/AddVprofileVerify',methods=['POST'])
 def Certification():

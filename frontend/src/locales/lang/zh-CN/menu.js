@@ -3,7 +3,7 @@ export default {
   'menu.home': '主页',
   'menu.consumer': 'C端通用工具',
   'menu.consumer.certification': '开通实名认证',
-  'menu.consumer.video-permissions': '开通视频开播权限',
+  'menu.consumer.video-permissions': '查询uid',
   'menu.business': 'B端通用工具',
   'menu.business.createBroadcast': '创建课程直播',
   'menu.exception.not-find': '404',
