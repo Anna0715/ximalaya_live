@@ -9,7 +9,6 @@ RUN mkdir -p /release
 # 拷贝当前目录所有的文件，进入 docker 镜像中
 COPY  ./ximalaya_live  ./release
 #添加权限
-RUN #chmod u+x /release && sh /release
 RUN chmod u+x /release
 #在镜像内安装依赖包
 RUN pip install --upgrade pip && pip3 install -r requirement
