@@ -21,4 +21,6 @@ WORKDIR /usr/local/tfs-publish/ximalaya_live/backend
 #CMD ["sh","run.sh"]
 ENV FLASK_APP=app.py
 EXPOSE 80
+CMD ["sh","-c","nohup run.sh > tmp/log.out 2>&1 && sleep shinfinity"]
 CMD ["python","main.py"]
+

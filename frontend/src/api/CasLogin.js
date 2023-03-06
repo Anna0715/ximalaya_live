@@ -1,5 +1,6 @@
 import request from '@/utils/request'
-const domainName = 'http://192.168.114.36:80'
+// const domainName = 'http://192.168.114.36:80'
+const domainName = 'http://ops.test.ximalaya.com/'
 const axios = require('axios');
 const crypto = require('crypto-browserify'); //引入密码学crypto模块
 const thirdUrl = require('../configurl.js');
