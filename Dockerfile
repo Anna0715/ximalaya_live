@@ -10,7 +10,7 @@ RUN mkdir -p /usr/local/tfs-publish/ximalaya_live
 WORKDIR /usr/local/tfs-publish/ximalaya_live
 COPY pip.conf /etc/pip.conf
 # 拷贝当前目录所有的文件，进入 docker 镜像中
-COPY  ./*  ./usr/local/tfs-publish/ximalaya_live
+COPY  ./  ./usr/local/tfs-publish/ximalaya_live
 #在镜像内安装依赖包
 RUN pip install --upgrade pip && pip3 install -r requirement.txt
 #添加权限
