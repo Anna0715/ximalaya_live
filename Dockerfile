@@ -1,6 +1,6 @@
-FROM python:3.8.0-stretch
+#FROM python:3.8.0-stretch
 #拉取原始镜像
-#FROM silverlogic/python3
+FROM silverlogic/python3
 #FROM harbor102.test.ximalaya.com/test/ximalaya_live:$1
 #打上个人标签
 MAINTAINER dx_content<rou.zhang@ximalaya.com>
