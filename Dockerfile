@@ -11,13 +11,13 @@ RUN mkdir -p /usr/local/tfs-publish/ximalaya_live
 COPY  ./  ./usr/local/tfs-publish/ximalaya_live
 WORKDIR /usr/local/tfs-publish/ximalaya_live
 #COPY pip.conf /etc/pip.conf
-#在镜像内安装依赖包
-RUN pip install --upgrade pip && pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
 #RUN cp ximalaya_live/backend/run.sh .
 # 进入镜像工作目录
 WORKDIR /usr/local/tfs-publish/ximalaya_live/backend
+#在镜像内安装依赖包
+RUN pip install --upgrade pip && pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt
 #CMD ["sh","run.sh"]
 ENV FLASK_APP=app.py
 EXPOSE 80
