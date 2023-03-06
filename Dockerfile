@@ -15,10 +15,10 @@ COPY  ./  ./usr/local/tfs-publish/ximalaya_live
 RUN pip install --upgrade pip && pip3 install -r requirement.txt
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
-RUN cp ximalaya_live/backend/run.sh .
+#RUN cp ximalaya_live/backend/run.sh .
 # 进入镜像工作目录
 WORKDIR /usr/local/tfs-publish/ximalaya_live/backend
-CMD ["sh","run.sh"]
+#CMD ["sh","run.sh"]
 ENV FLASK_APP=app.py
 EXPOSE 80
 CMD ["python","main.py"]
