@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install python3-pip python3-pymysql -y libsm6 libx
 RUN mkdir -p /usr/local/tfs-publish/ximalaya_live
 WORKDIR /usr/local/tfs-publish/ximalaya_live
 COPY pip.conf /etc/pip.conf
-#在镜像内安装依赖包
-RUN pip install --upgrade pip && pip3 install -r requirement.txt
 # 拷贝当前目录所有的文件，进入 docker 镜像中
 COPY  ./ximalaya_live/*  ./usr/local/tfs-publish/ximalaya_live
+#在镜像内安装依赖包
+RUN pip install --upgrade pip && pip3 install -r requirement.txt
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
 RUN cp ximalaya_live/backend/run.sh .
