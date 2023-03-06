@@ -1,6 +1,6 @@
 #FROM python:3.8.0-stretch
 #拉取原始镜像
-FROM silverlogic/python3.6
+FROM silverlogic/python3.9
 #FROM harbor102.test.ximalaya.com/test/ximalaya_live:$1
 #打上个人标签
 MAINTAINER dx_content<rou.zhang@ximalaya.com>
@@ -12,7 +12,7 @@ COPY  ./  ./usr/local/tfs-publish/ximalaya_live
 WORKDIR /usr/local/tfs-publish/ximalaya_live
 #COPY pip.conf /etc/pip.conf
 #在镜像内安装依赖包
-RUN pip install --upgrade pip && pip3 install -r requirements.txt -i https://pypi.doubanio.com/simple
+RUN pip install --upgrade pip && pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
 #RUN cp ximalaya_live/backend/run.sh .
