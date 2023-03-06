@@ -10,6 +10,7 @@ RUN mkdir -p /usr/local/tfs-publish/ximalaya_live
 # 拷贝当前目录所有的文件，进入 docker 镜像中
 COPY  ./  ./usr/local/tfs-publish/ximalaya_live
 WORKDIR /usr/local/tfs-publish/ximalaya_live
+
 #COPY pip.conf /etc/pip.conf
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
