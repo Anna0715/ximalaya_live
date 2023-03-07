@@ -10,7 +10,6 @@ RUN mkdir -p /usr/local/tfs-publish/ximalaya_live
 # 拷贝当前目录所有的文件，进入 docker 镜像中
 COPY  ./  ./usr/local/tfs-publish/ximalaya_live
 WORKDIR /usr/local/tfs-publish/ximalaya_live
-
 #COPY pip.conf /etc/pip.conf
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
@@ -21,7 +20,7 @@ WORKDIR /usr/local/tfs-publish/ximalaya_live/backend
 RUN pip install --upgrade pip && pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt
 #CMD ["sh","run.sh"]
 ENV FLASK_APP=app.py
-EXPOSE 80
+EXPOSE 7169
 CMD ["sh","-c","nohup run.sh > tmp/log.out 2>&1 && sleep shinfinity"]
 CMD ["python","main.py"]
 

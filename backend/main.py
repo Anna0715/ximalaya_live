@@ -1,23 +1,62 @@
 from http.client import HTTPException
-from flask import Flask, jsonify, request, render_template, redirect
+from flask import Flask, jsonify, request, render_template, redirect, make_response
 from client import *
 from Pc import *
 from flask_cors import *
 from gevent import pywsgi
+# from logging.config import dictConfig
+# dictConfig({
+#         "version": 1,
+#         "disable_existing_loggers": False,  # 不覆盖默认配置
+#         "formatters": {  # 日志输出样式
+#             "default": {
+#                 "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+#             }
+#         },
+#         "handlers": {
+#             "console": {
+#                 "class": "logging.StreamHandler",  # 控制台输出
+#                 "level": "DEBUG",
+#                 "formatter": "default",
+#             },
+#             "log_file": {
+#                 "class": "logging.handlers.RotatingFileHandler",
+#                 "level": "INFO",
+#                 "formatter": "default",   # 日志输出样式对应formatters
+#                 "filename": "./logs/flask.log",  # 指定log文件目录
+#                 "maxBytes": 20*1024*1024,   # 文件最大20M
+#                 "backupCount": 10,          # 最多10个文件
+#                 "encoding": "utf8",         # 文件编码
+#             },
+#
+#         },
+#         "root": {
+#             "level": "DEBUG",  # # handler中的level会覆盖掉这里的level
+#             "handlers": ["console", "log_file"],
+#         },
+#     }
+# )
+
 app = Flask(__name__,
             template_folder="../frontend/dist",
             static_folder="../frontend/dist",
             static_url_path="")#创建一个服务，赋值给APP
 CORS(app,supports_credentials=True)
 datas=Common.get_data()
+
+# XDCS健康检查端口
+@app.route("/ximalive-qa/healthcheck",methods=['GET'])
+def healthcheck():
+    response=make_response('* xdcs.default.healthCheck: OK\nhealthCheck success')
+    return response
 @app.route("/")
-@app.route("/user/login")
-@app.route("/consumer/certification")
+@app.route("/ximalive-qa/user/login")
+@app.route("/ximalive-qa/consumer/certification")
 def index():
     return render_template('index.html')
 
 # 登陆接口
-@app.route('/login', methods=['GET'])
+@app.route('/ximalive-qa/login', methods=['GET'])
 def login():
     redirect_url = request.args.get('redirect_url')
     if redirect_url is None or len(redirect_url) == 0:
@@ -29,8 +68,9 @@ def login():
             HTTPException('重定向[{}]失败'.format(redirect_url), e)
             raise HTTPException('重定向[{}]失败！'.format(redirect_url))
 # 主播实名认证+开通视频&卖货权限
-@app.route('/AddVprofileVerify',methods=['POST'])
+@app.route('/ximalive-qa/AddVprofileVerify',methods=['POST'])
 def Certification():
+    # app.logger.debug(f'login request payload: {request.get_data()}')
     data = json.loads(request.get_data())
     uids = data['uid']
     isOpenlvb = data['isOpenlvb']
@@ -47,7 +87,7 @@ def Certification():
     ress=certification(uids,isOpenlvb,isOpengoods)
     return jsonify(ress)
 # 创建课程直播
-@app.route('/CreateCourseLive',methods=['post'])
+@app.route('/ximalive-qa/CreateCourseLive',methods=['post'])
 def Create_Course_live():
     data = json.loads(request.get_data())
     uids=data['uid']
@@ -69,7 +109,7 @@ def Create_Course_live():
     return jsonify(ress)
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80,debug=False,threaded=True)
-    server=pywsgi.WSGIServer(('0.0.0.0',80),app)
+    server=pywsgi.WSGIServer(('0.0.0.0',7169),app)
     server.serve_forever()
 
 
