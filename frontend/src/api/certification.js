@@ -1,12 +1,11 @@
 import request from '@/utils/request'
 
 // const domainName = 'http://192.168.114.36:80'
-const domainName = 'http://ops.test.ximalaya.com/'
+const domainName = 'http://ops.test.ximalaya.com/ximalive-qa'
 
 const api = {
   addVprofileVerify: '/AddVprofileVerify'
 }
-
 
 export default api
 
