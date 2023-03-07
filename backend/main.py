@@ -49,9 +49,9 @@ datas=Common.get_data()
 def healthcheck():
     response=make_response('* xdcs.default.healthCheck: OK\nhealthCheck success')
     return response
-@app.route("/ximalive-qa/")
-@app.route("/ximalive-qa/user/login")
-@app.route("/ximalive-qa/consumer/certification")
+@app.route("/")
+@app.route("/user/login")
+@app.route("/consumer/certification")
 def index():
     return render_template('index.html')
 
