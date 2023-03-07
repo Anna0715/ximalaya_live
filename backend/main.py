@@ -37,10 +37,11 @@ from gevent import pywsgi
 #     }
 # )
 
-app = Flask(__name__,
-            template_folder="../frontend/dist",
-            static_folder="../frontend/dist",
-            static_url_path="")#创建一个服务，赋值给APP
+# app = Flask(__name__,
+#             template_folder="./dist",
+#             static_folder="./dist",
+#             static_url_path="")#创建一个服务，赋值给APP
+app=Flask(__name__)
 CORS(app,supports_credentials=True)
 datas=Common.get_data()
 
@@ -69,7 +70,7 @@ def login():
             raise HTTPException('重定向[{}]失败！'.format(redirect_url))
 # 主播实名认证+开通视频&卖货权限
 @app.route('/ximalive-qa/AddVprofileVerify',methods=['POST'])
-def Certification():
+def certification():
     # app.logger.debug(f'login request payload: {request.get_data()}')
     data = json.loads(request.get_data())
     uids = data['uid']
@@ -88,7 +89,7 @@ def Certification():
     return jsonify(ress)
 # 创建课程直播
 @app.route('/ximalive-qa/CreateCourseLive',methods=['post'])
-def Create_Course_live():
+def create_Course_live():
     data = json.loads(request.get_data())
     uids=data['uid']
     # 直播类型：测试、正式、付费
@@ -108,7 +109,7 @@ def Create_Course_live():
     ress=create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,endAt,price,quantity,clearRate)
     return jsonify(ress)
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=80,debug=False,threaded=True)
+    # app.run(host='0.0.0.0', port=82,debug=False,threaded=True)
     server=pywsgi.WSGIServer(('0.0.0.0',7169),app)
     server.serve_forever()
 

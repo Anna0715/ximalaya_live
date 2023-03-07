@@ -3,7 +3,7 @@
 FROM silverlogic/python3.6
 #FROM harbor102.test.ximalaya.com/test/ximalaya_live:$1
 #打上个人标签
-MAINTAINER dx_content<rou.zhang@ximalaya.com>
+MAINTAINER ximalive-qa<rou.zhang@ximalaya.com>
 RUN apt-get update && apt-get install python3-pip python3-pymysql -y libsm6 libxext6 libxrender-dev; apt-get autoclean; rm -rf /var/lib/apt/lists/*
 #创建工作目录
 RUN mkdir -p /usr/local/tfs-publish/ximalaya_live
@@ -14,6 +14,8 @@ WORKDIR /usr/local/tfs-publish/ximalaya_live
 #添加权限
 RUN chmod u+x /usr/local/tfs-publish/ximalaya_live
 #RUN cp ximalaya_live/backend/run.sh .
+#WORKDIR /usr/local/tfs-publish/ximalaya_live/frontend
+##前端项目打包
 # 进入镜像工作目录
 WORKDIR /usr/local/tfs-publish/ximalaya_live/backend
 #在镜像内安装依赖包
