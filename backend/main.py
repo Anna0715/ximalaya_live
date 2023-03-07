@@ -37,11 +37,11 @@ from gevent import pywsgi
 #     }
 # )
 
-# app = Flask(__name__,
-#             template_folder="",
-#             static_folder="",
-#             static_url_path="")#创建一个服务，赋值给APP
-app=Flask(__name__)
+app = Flask(__name__,
+            template_folder="./templates",
+            static_folder="./templates",
+            static_url_path="")#创建一个服务，赋值给APP
+# app=Flask(__name__)
 CORS(app,supports_credentials=True)
 datas=Common.get_data()
 
