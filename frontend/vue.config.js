@@ -40,7 +40,6 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
-  
   configureWebpack: {
     // webpack plugins
     plugins: [
