@@ -39,8 +39,7 @@ from gevent import pywsgi
 
 app = Flask(__name__,
             template_folder="./templates",
-            static_folder="./templates",
-            static_url_path="")#创建一个服务，赋值给APP
+            static_folder="./templates",static_url_path="")#创建一个服务，赋值给APP
 # app=Flask(__name__)
 CORS(app,supports_credentials=True)
 datas=Common.get_data()
@@ -50,7 +49,7 @@ datas=Common.get_data()
 def healthcheck():
     response=make_response('* xdcs.default.healthCheck: OK\nhealthCheck success')
     return response
-@app.route("/")
+@app.route("/ximalive-qa")
 @app.route("/user/login")
 @app.route("/consumer/certification")
 def index():
