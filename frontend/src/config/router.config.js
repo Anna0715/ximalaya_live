@@ -39,15 +39,15 @@ export const asyncRouterMap = [
       {
         path: '/business',
         name: 'business',
-        redirect: '/business/createBroadcast',
+        redirect: '/business/createCourseLive',
         component: RouteView,
         meta: { title: 'menu.business', keepAlive: false, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
           {
-            path: '/business/createBroadcast',
-            name: 'CreateBroadcast',
-            component: () => import('@/views/exception/404'),
-            meta: { title: 'menu.business.createBroadcast', keepAlive: false, permission: ['dashboard'] }
+            path: '/business/createCourseLive',
+            name: 'CreateCourseLive',
+            component: () => import('@/views/exception/404.vue'),
+            meta: { title: 'menu.business.createCourseLive', keepAlive: false, permission: ['dashboard'] }
           }
 
         ]

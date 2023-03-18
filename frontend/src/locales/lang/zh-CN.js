@@ -4,6 +4,7 @@ import momentCN from 'moment/locale/zh-cn'
 import menu from './zh-CN/menu'
 import user from './zh-CN/user'
 import certification from './zh-CN/certification'
+import createCourseLive from './zh-CN/createCourseLive'
 
 const components = {
   antLocale: antd,
@@ -21,5 +22,6 @@ export default {
   ...global,
   ...menu,
   ...user,
-  ...certification
+  ...certification,
+  ...createCourseLive
 }
