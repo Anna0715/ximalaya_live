@@ -108,7 +108,7 @@ def Create_Course_live():
     return jsonify(ress)
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=7169,debug=False,threaded=True)
-    server=pywsgi.WSGIServer(('0.0.0.0',8080),app)
+    server=pywsgi.WSGIServer(('0.0.0.0',7169),app)
     server.serve_forever()
 
 
