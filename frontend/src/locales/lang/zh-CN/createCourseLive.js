@@ -10,6 +10,7 @@ export default {
   'createCourseLive.stock': '库存',
   'createCourseLive.ticket.sharing': '门票分成',
   'createCourseLive.open.sale.check': '开启卖货',
-  'createCourseLive.open.play.back': '开启回放(请勿在测试和非必要情况下开启)',
+  'createCourseLive.open.play.back': '开启回放',
+  'createCourseLive.open.play.back.tip': '(请勿在测试和非必要情况下开启)',
   'createCourseLive.open.send.gift': '开启送礼'
 }

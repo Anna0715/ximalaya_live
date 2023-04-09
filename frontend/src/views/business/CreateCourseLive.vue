@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }" :form="form" @submit="onSubmit">
+    <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :form="form" @submit="onSubmit">
       <a-form-item :label="$t('createCourseLive.uid')">
         <a-input type="text" :placeholder="$t('createCourseLive.uid.placeholder')" v-decorator="[
           `uids`,
@@ -27,32 +27,51 @@
         <a-range-picker v-model:value="rangeTime" format="YYYY-MM-DD HH:mm:ss" @change="rangeTimeChange" />
       </a-form-item>
 
-      <a-form-item :label="$t('createCourseLive.ticket.price')">
-        <a-input-number v-model:value="price" :min="0"
-          :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-          :parser="value => value.replace(/\$\s?|(,*)/g, '')" />
-      </a-form-item>
+      <a-row>
+        <a-col :span="1">
+        </a-col>
+        <a-col :span="6">
+          <a-form-item :label="$t('createCourseLive.ticket.price')" :label-col="{ span: 8 }">
+            <a-input-number v-model:value="price" :min="0"
+              :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+              :parser="value => value.replace(/\$\s?|(,*)/g, '')" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item :label="$t('createCourseLive.stock')" :label-col="{ span: 8 }">
+            <a-input-number v-model:value="stock" :min="0" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item :label="$t('createCourseLive.ticket.sharing')" :label-col="{ span: 8 }">
+            <a-input-number v-model:value="ticketSharing" :min="0" :max="70" :formatter="value => `${value}%`"
+              :parser="value => value.replace('%', '')" />
+          </a-form-item>
+        </a-col>
+      </a-row>
 
-      <a-form-item :label="$t('createCourseLive.stock')">
-        <a-input-number v-model:value="stock" :min="0" />
-      </a-form-item>
-
-      <a-form-item :label="$t('createCourseLive.ticket.sharing')">
-        <a-input-number v-model:value="ticketSharing" :min="0" :max="70" :formatter="value => `${value}%`"
-          :parser="value => value.replace('%', '')" />
-      </a-form-item>
-
-      <a-form-item :label="$t('createCourseLive.open.sale.check')">
-        <a-switch :checked="openSale" @change="onOpenSaleChange" />
-      </a-form-item>
-
-      <a-form-item :label="$t('createCourseLive.open.play.back')">
-        <a-switch :checked="showPlayBack" :disabled="true" />
-      </a-form-item>
-
-      <a-form-item :label="$t('createCourseLive.open.send.gift')">
-        <a-switch :checked="openSendGift" @change="onOpenSendGiftChange" />
-      </a-form-item>
+      <a-row>
+        <a-col :span="1">
+        </a-col>
+        <a-col :span="6">
+          <a-form-item :label="$t('createCourseLive.open.sale.check')" :label-col="{ span: 8 }">
+            <a-switch :checked="openSale" @change="onOpenSaleChange" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item :label="$t('createCourseLive.open.play.back')" :label-col="{ span: 8 }">
+            <a-tooltip>
+              <template #title>{{ $t('createCourseLive.open.play.back.tip') }}</template>
+              <a-switch :checked="showPlayBack" :disabled="true" />
+            </a-tooltip>
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item :label="$t('createCourseLive.open.send.gift')" :label-col="{ span: 8 }">
+            <a-switch :checked="openSendGift" @change="onOpenSendGiftChange" />
+          </a-form-item>
+        </a-col>
+      </a-row>
 
       <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
         <a-button type="primary" html-type="submit">操作</a-button>
@@ -111,9 +130,9 @@ export default {
   methods: {
     handleDropdownChange(value) {
       this.dropdownValue = value
-      if(value === 'test'){
+      if (value === 'test') {
         this.showPlayBack = false
-      }else{
+      } else {
         this.showPlayBack = true
       }
     },
