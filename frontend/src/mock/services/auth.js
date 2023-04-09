@@ -1,10 +1,10 @@
 import Mock from 'mockjs2'
 import { builder, getBody } from '../util'
 
-const username = ['xmlylive']
+const username = ['xmlylive', 'admin']
 // 强硬要求 ant.design 相同密码
 // '21232f297a57a5a743894a0e4a801fc3',
-const password = ['5fd8aeba973c86a2a7ffd33b7a10a710'] // admin, ant.design
+const password = ['5fd8aeba973c86a2a7ffd33b7a10a710', '21232f297a57a5a743894a0e4a801fc3'] // admin, ant.design
 
 const login = (options) => {
   const body = getBody(options)

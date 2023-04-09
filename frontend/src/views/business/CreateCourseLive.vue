@@ -2,73 +2,56 @@
   <div>
     <a-form :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }" :form="form" @submit="onSubmit">
       <a-form-item :label="$t('createCourseLive.uid')">
-        <a-input
-          type="text"
-          :placeholder="$t('createCourseLive.uid.placeholder')"
-          v-decorator="[
-            `uids`,
-            {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入uid',
-                },
-              ],
-            },
-          ]"/>
+        <a-input type="text" :placeholder="$t('createCourseLive.uid.placeholder')" v-decorator="[
+          `uids`,
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入uid',
+              },
+            ],
+          },
+        ]" />
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.dropdown.label')">
-        <a-space> @click="handleDropdownButtonClick">
-          {{ $t('createCourseLive.dropdown.pay.type') }}
-          <template #overlay>
-            <a-menu>
-              <a-menu-item>
-                {{ $t('createCourseLive.dropdown.pay.type') }}
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">{{ $t('createCourseLive.dropdown.formal.type') }} </a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:;">{{ $t('createCourseLive.dropdown.test.type') }} </a>
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-space>>
+        <a-select ref="select" v-model:value="dropdownValue" style="width: 120px" @change="handleDropdownChange">
+          <a-select-option value="pay">{{ $t('createCourseLive.dropdown.pay.type') }}</a-select-option>
+          <a-select-option value="formal">{{ $t('createCourseLive.dropdown.formal.type') }}</a-select-option>
+          <a-select-option value="test">{{ $t('createCourseLive.dropdown.test.type') }}</a-select-option>
+        </a-select>
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.range.time')">
-        <a-range-picker v-model:value="value3"/>
+        <a-range-picker v-model:value="rangeTime" format="YYYY-MM-DD HH:mm:ss" @change="rangeTimeChange" />
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.ticket.price')">
-        <a-input
-          type="text"
-          />
+        <a-input-number v-model:value="price" :min="0"
+          :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+          :parser="value => value.replace(/\$\s?|(,*)/g, '')" />
       </a-form-item>
 
-       <a-form-item :label="$t('createCourseLive.stock')">
-        <a-input
-          type="text"
-          />
+      <a-form-item :label="$t('createCourseLive.stock')">
+        <a-input-number v-model:value="stock" :min="0" />
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.ticket.sharing')">
-        <a-input
-          type="text"
-          />
+        <a-input-number v-model:value="ticketSharing" :min="0" :max="70" :formatter="value => `${value}%`"
+          :parser="value => value.replace('%', '')" />
       </a-form-item>
 
-       <a-form-item :label="$t('createCourseLive.open.sale.check')">
-        <a-switch :checked="openVedio" @change="onVedioChange" />
+      <a-form-item :label="$t('createCourseLive.open.sale.check')">
+        <a-switch :checked="openSale" @change="onOpenSaleChange" />
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.open.play.back')">
-        <a-switch :checked="true" @change="onVedioChange" :disabled="true"/>
+        <a-switch :checked="showPlayBack" :disabled="true" />
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.open.send.gift')">
-        <a-switch :checked="openVedio" @change="onVedioChange" />
+        <a-switch :checked="openSendGift" @change="onOpenSendGiftChange" />
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
@@ -79,35 +62,32 @@
 
     <a-table :dataSource="dataSource" :columns="columns" bordered :loading="tableLoading">
       <template #title>{{ tableTitle }}</template>
-      <template slot="isCertification" slot-scope="item">
-        <a-icon type="check-circle" theme="filled" style="color:#52c41a" v-if="item.isCertification === 'success'"/>
-        <span v-if="item.isCertification !== 'success'">{{ item.isCertification }}</span>
-      </template>
-      <template slot="openVedio" slot-scope="item">
-        <a-icon type="check-circle" theme="filled" style="color:#52c41a" v-if="item === 'success'"/>
-        <a-icon type="close-circle" theme="filled" style="color:#a9a9a9" v-else/>
-      </template>
-      <template slot="openSale" slot-scope="item">
-        <a-icon type="check-circle" theme="filled" style="color:#52c41a" v-if="item === 'success'"/>
-        <a-icon type="close-circle" theme="filled" style="color:#a9a9a9" v-else/>
-      </template>
     </a-table>
 
   </div>
 </template>
 
 <script>
-import {createCourseLive} from '@/api/certification'
-import {message} from 'ant-design-vue'
+import { createCourseLive } from '@/api/certification'
+import { message } from 'ant-design-vue'
+import moment from 'moment';
+
+const timeFormat = 'YYYY-MM-DD hh:mm:ss';
 
 export default {
   name: 'CreateCourseLive',
   data() {
     return {
-      form: this.$form.createForm(this, {name: 'CreateCourseLive'}),
+      form: this.$form.createForm(this, { name: 'CreateCourseLive' }),
       uids: '',
-      courseType: '',
-
+      dropdownValue: 'pay',
+      rangeTime: [moment().add(20, 'm').format(timeFormat), moment().add(50, 'm').format(timeFormat)],
+      price: 10,
+      stock: 1000,
+      ticketSharing: 50,
+      openSale: true,
+      openSendGift: true,
+      showPlayBack: true,
 
       dataSource: [],
       tableTitle: '请求uid数量：0，成功数量：0',
@@ -120,44 +100,43 @@ export default {
           align: 'center'
         },
         {
-          title: '实名认证',
-          slots: {
-            title: 'isCertification'
-          },
-          scopedSlots: {customRender: 'isCertification'},
-          align: 'center'
-        },
-        {
-          title: '视频权限',
-          dataIndex: 'openVedio',
-          slots: {
-            title: 'openVedio'
-          },
-          scopedSlots: {customRender: 'openVedio'},
-          align: 'center'
-        },
-        {
-          title: '卖货权限',
-          dataIndex: 'openSale',
-          slots: {
-            title: 'openSale'
-          },
-          scopedSlots: {customRender: 'openSale'},
+          title: '返回信息',
+          dataIndex: 'response',
+          key: 'response',
           align: 'center'
         }
       ]
     }
   },
   methods: {
-    handleDropdownButtonClick(value){
-    console.log('yyyyy',value)
+    handleDropdownChange(value) {
+      this.dropdownValue = value
+      if(value === 'test'){
+        this.showPlayBack = false
+      }else{
+        this.showPlayBack = true
+      }
     },
+    rangeTimeChange(value) {
+      this.rangeTime = value
+    },
+    onOpenSaleChange() {
+      this.openSale = !this.openSale
+    },
+    onOpenSendGiftChange() {
+      this.openSendGift = !this.openSendGift
+    },
+
     resetForm() {
       this.form.resetFields()
-      this.openVedio = false
-      this.openSale = false
-      this.dataSource = []
-      this.tableTitle = ''
+      this.dropdownValue = 'pay'
+      this.rangeTime = [moment().add(20, 'm').format(timeFormat), moment().add(50, 'm').format(timeFormat)]
+      this.price = 10
+      this.stock = 1000
+      this.ticketSharing = 50
+      this.openSale = true
+      this.openSendGift = true
+      this.showPlayBack = true
     },
     onSubmit(e) {
       e.preventDefault()
@@ -172,8 +151,15 @@ export default {
 
             createCourseLive({
               uid: _this.uids,
-              isOpenlvb: _this.openVedio,
-              isOpengoods: _this.openSale
+              coursetype: _this.dropdownValueBeCourseType(_this.dropdownValue),
+              openGoods: _this.openSale,
+              openGift: _this.openSendGift,
+              showPlayBack: _this.showPlayBack,
+              startAt: _this.rangeTime?.[0],
+              endAt: _this.rangeTime?.[1],
+              price: _this.price,
+              quantity: _this.stock,
+              clearRate: _this.ticketSharing
             }).then(res => {
               if (res.code === 200 && res?.data) {
                 let successCount = 0
@@ -181,11 +167,9 @@ export default {
                   _this.dataSource.push({
                     key: (index + 1) + '',
                     uid: item?.uid,
-                    isCertification: item?.profileVerify,
-                    openSale: item?.OpenGoods,
-                    openVedio: item?.Openlvb
+                    response: item?.msg
                   })
-                  if (item?.profileVerify) {
+                  if (item?.CeatecourseLive === 'success') {
                     successCount += 1
                   }
                 })
@@ -203,6 +187,18 @@ export default {
           }
         }
       })
+    },
+    dropdownValueBeCourseType(dropdownValue) {
+      switch (dropdownValue) {
+        case 'pay':
+          return '付费'
+        case 'formal':
+          return '正式'
+        case 'test':
+          return '测试'
+        default:
+          return '付费'
+      }
     }
   }
 }
