@@ -5,7 +5,7 @@ import request from '@/utils/request'
 const domainName = 'http://ops.test.ximalaya.com/ximalive-qa'
 const api = {
   addVprofileVerify: '/AddVprofileVerify',
-  createCourseLive: '/CreatecourseLive'
+  createCourseLive: '/CreateCourseLive'
 }
 export default api
 export function addVprofileVerify (parameter) {

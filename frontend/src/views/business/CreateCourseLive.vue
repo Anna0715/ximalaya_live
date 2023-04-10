@@ -2,17 +2,20 @@
   <div>
     <a-form :label-col="{ span: 3 }" :wrapper-col="{ span: 16 }" :form="form" @submit="onSubmit">
       <a-form-item :label="$t('createCourseLive.uid')">
-        <a-input type="text" :placeholder="$t('createCourseLive.uid.placeholder')" v-decorator="[
-          `uids`,
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入uid',
-              },
-            ],
-          },
-        ]" />
+        <a-input
+          type="text"
+          :placeholder="$t('createCourseLive.uid.placeholder')"
+          v-decorator="[
+            `uids`,
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入uid',
+                },
+              ],
+            },
+          ]" />
       </a-form-item>
 
       <a-form-item :label="$t('createCourseLive.dropdown.label')">
@@ -32,7 +35,9 @@
         </a-col>
         <a-col :span="6">
           <a-form-item :label="$t('createCourseLive.ticket.price')" :label-col="{ span: 8 }">
-            <a-input-number v-model:value="price" :min="0"
+            <a-input-number
+              v-model:value="price"
+              :min="0"
               :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
               :parser="value => value.replace(/\$\s?|(,*)/g, '')" />
           </a-form-item>
@@ -44,7 +49,11 @@
         </a-col>
         <a-col :span="6">
           <a-form-item :label="$t('createCourseLive.ticket.sharing')" :label-col="{ span: 8 }">
-            <a-input-number v-model:value="ticketSharing" :min="0" :max="70" :formatter="value => `${value}%`"
+            <a-input-number
+              v-model:value="ticketSharing"
+              :min="0"
+              :max="70"
+              :formatter="value => `${value}%`"
               :parser="value => value.replace('%', '')" />
           </a-form-item>
         </a-col>
@@ -62,7 +71,7 @@
           <a-form-item :label="$t('createCourseLive.open.play.back')" :label-col="{ span: 8 }">
             <a-tooltip>
               <template #title>{{ $t('createCourseLive.open.play.back.tip') }}</template>
-              <a-switch :checked="showPlayBack" :disabled="true" />
+              <a-switch :checked="showPlayback" :disabled="true" />
             </a-tooltip>
           </a-form-item>
         </a-col>
@@ -89,13 +98,13 @@
 <script>
 import { createCourseLive } from '@/api/certification'
 import { message } from 'ant-design-vue'
-import moment from 'moment';
+import moment from 'moment'
 
-const timeFormat = 'YYYY-MM-DD hh:mm:ss';
+const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
 export default {
   name: 'CreateCourseLive',
-  data() {
+  data () {
     return {
       form: this.$form.createForm(this, { name: 'CreateCourseLive' }),
       uids: '',
@@ -106,7 +115,7 @@ export default {
       ticketSharing: 50,
       openSale: true,
       openSendGift: true,
-      showPlayBack: true,
+      showPlayback: true,
 
       dataSource: [],
       tableTitle: '请求uid数量：0，成功数量：0',
@@ -128,25 +137,25 @@ export default {
     }
   },
   methods: {
-    handleDropdownChange(value) {
+    handleDropdownChange (value) {
       this.dropdownValue = value
       if (value === 'test') {
-        this.showPlayBack = false
+        this.showPlayback = false
       } else {
-        this.showPlayBack = true
+        this.showPlayback = true
       }
     },
-    rangeTimeChange(value) {
+    rangeTimeChange (value) {
       this.rangeTime = value
     },
-    onOpenSaleChange() {
+    onOpenSaleChange () {
       this.openSale = !this.openSale
     },
-    onOpenSendGiftChange() {
+    onOpenSendGiftChange () {
       this.openSendGift = !this.openSendGift
     },
 
-    resetForm() {
+    resetForm () {
       this.form.resetFields()
       this.dropdownValue = 'pay'
       this.rangeTime = [moment().add(20, 'm').format(timeFormat), moment().add(50, 'm').format(timeFormat)]
@@ -155,9 +164,9 @@ export default {
       this.ticketSharing = 50
       this.openSale = true
       this.openSendGift = true
-      this.showPlayBack = true
+      this.showPlayback = true
     },
-    onSubmit(e) {
+    onSubmit (e) {
       e.preventDefault()
       const _this = this
       this.form.validateFields((error, values) => {
@@ -171,9 +180,9 @@ export default {
             createCourseLive({
               uid: _this.uids,
               coursetype: _this.dropdownValueBeCourseType(_this.dropdownValue),
-              openGoods: _this.openSale,
-              openGift: _this.openSendGift,
-              showPlayBack: _this.showPlayBack,
+              openGoods: _this.openSale?.toString(),
+              openGift: _this.openSendGift?.toString(),
+              showPlayback: _this.showPlayback?.toString(),
               startAt: _this.rangeTime?.[0],
               endAt: _this.rangeTime?.[1],
               price: _this.price,
@@ -207,7 +216,7 @@ export default {
         }
       })
     },
-    dropdownValueBeCourseType(dropdownValue) {
+    dropdownValueBeCourseType (dropdownValue) {
       switch (dropdownValue) {
         case 'pay':
           return '付费'
