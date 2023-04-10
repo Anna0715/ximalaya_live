@@ -64,7 +64,7 @@ const article = (options) => {
       members: [
         {
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ZiESqWwCXBRQoaPONSJe.png',
-          name: '曲丽丽',
+          name: 'zhang',
           id: 'member1'
         },
         {
