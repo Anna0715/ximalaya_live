@@ -46,7 +46,7 @@ export const asyncRouterMap = [
           {
             path: '/business/createCourseLive',
             name: 'CreateCourseLive',
-            component: () => import('@/views/exception/404.vue'),
+            component: () => import('@/views/business/CreateCourseLive.vue'),
             meta: { title: 'menu.business.createCourseLive', keepAlive: false, permission: ['dashboard'] }
           }
 
