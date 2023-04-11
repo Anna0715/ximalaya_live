@@ -146,7 +146,7 @@ export default {
       }
     },
     rangeTimeChange (value) {
-      this.rangeTime = [value?.[0]?.format(timeFormat), value?.[0]?.format(timeFormat)]
+      this.rangeTime = [value?.[0]?.format(timeFormat), value?.[1]?.format(timeFormat)]
     },
     onOpenSaleChange () {
       this.openSale = !this.openSale
@@ -193,7 +193,7 @@ export default {
                 let successCount = 0
                 res?.data?.map((item, index) => {
                   _this.dataSource.push({
-                    key: (index + 1) + ''
+                    key: (index + 1) + '',
                     uid: item?.uid,
                     response: item?.msg
                   })
