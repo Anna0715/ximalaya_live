@@ -106,6 +106,7 @@ def create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,e
     # 转时间戳(毫秒)
     startime = int(round(time.mktime(time.strptime(startAt, '%Y-%m-%d %H:%M:%S')) * 1000))
     endtime = int(round(time.mktime(time.strptime(endAt, '%Y-%m-%d %H:%M:%S')) * 1000))
+    print(startime)
     name = str(startime) + '造数' + coursetype + '直播'
     ress={}
     data=[]
@@ -147,11 +148,14 @@ def create_course_live(uids,coursetype,openGoods,openGift,showPlayback,startAt,e
             print(params)
             re = requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=params,verify=False)
             #     获取code的内容
-            print(re.text)
-            content=json.loads(re.text)['content']
+            print("响应"+re.text)
+            content=json.loads(re.text)["content"]
+            print("内容",content)
             content=json.loads(content)
-            print(content)
             # 响应code含义：0:成功// 10：该时间段已有直播 9:开始时间需大于当前时间
+            if "liveRecord" in content:
+                content=content["liveRecord"]
+            print("实际",content)
             if content["code"]==0:
                 d["CeatecourseLive"]="success"
                 d["msg"]="创建"+coursetype+"课程直播场次成功"
@@ -197,4 +201,4 @@ def create_family_account():
     da = Common.execute_sql(datas['host1'], datas['port1'], 'lamia', datas['user'], datas['password'], sql1)
 if __name__ == '__main__':
     # addCourselivewhitelist("1304329")
-    print(create_course_live("1294839","付费","true","true","true","2023-03-01 19:58:49","2023-03-01 20:58:49",5,100,50))
+    print(create_course_live("1306260","付费","true","true","true","2023-04-18 10:58:49","2023-04-18 11:58:49",5,100,50))
