@@ -101,6 +101,7 @@ def Create_Course_live():
     except:
         startAt = (datetime.datetime.now() + datetime.timedelta(minutes=20)).strftime("%Y-%m-%d %H:%M:%S")
         endAt = (datetime.datetime.now() + datetime.timedelta(minutes=50)).strftime("%Y-%m-%d %H:%M:%S")
+    # 由于平台侧的时间有延迟所以
     price=data['price']
     quantity=data['quantity']
     clearRate = data['clearRate']

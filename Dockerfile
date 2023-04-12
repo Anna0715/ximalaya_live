@@ -22,6 +22,7 @@ WORKDIR /usr/local/tfs-publish/ximalaya_live/backend
 RUN pip install --upgrade pip && pip3 install -i https://mirrors.aliyun.com/pypi/simple -r requirements.txt
 #CMD ["sh","run.sh"]
 ENV FLASK_APP=app.py
+ENV TZ="Asia/Shanghai"
 EXPOSE 7169
 CMD ["sh","-c","nohup run.sh > tmp/log.out 2>&1 && sleep shinfinity"]
 CMD ["python","main.py"]
