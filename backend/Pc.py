@@ -201,4 +201,4 @@ def create_family_account():
     da = Common.execute_sql(datas['host1'], datas['port1'], 'lamia', datas['user'], datas['password'], sql1)
 if __name__ == '__main__':
     # addCourselivewhitelist("1304329")
-    print(create_course_live("1306260","付费","true","true","true","2023-04-18 10:58:49","2023-04-18 11:58:49",5,100,50))
+    print(create_course_live("1306625","正式","true","true","true","2023-04-12 12:33:31","2023-04-12 13:33:31",5,100,50))
