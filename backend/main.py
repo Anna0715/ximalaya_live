@@ -49,7 +49,7 @@ datas=Common.get_data()
 def healthcheck():
     response=make_response('* xdcs.default.healthCheck: OK\nhealthCheck success')
     return response
-@app.route("/")
+@app.route("/ximalive-qa/")
 def index():
     return render_template('index.html')
 
