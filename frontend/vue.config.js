@@ -140,7 +140,7 @@ const vueConfig = {
   // babel-loader no-ignore node_modules/*
   transpileDependencies: [],
 
-  publicPath: ''
+  publicPath: '/'
 }
 
 // preview.pro.loacg.com only do not use in your production;
