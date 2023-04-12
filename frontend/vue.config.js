@@ -123,7 +123,7 @@ const vueConfig = {
 
   devServer: {
     // development server port 8000
-    port: 8000
+    port: 7169
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     // proxy: {
     //   '/api': {
@@ -139,9 +139,11 @@ const vueConfig = {
   lintOnSave: false,
   // babel-loader no-ignore node_modules/*
   transpileDependencies: [],
-
+  // 去除打包后的hush值
+  filenameHashing: false,
   publicPath: '/',
   // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  // 指定打包文件路径
   outputDir: '../backend/templates'
 }
 
@@ -150,5 +152,4 @@ if (process.env.VUE_APP_PREVIEW === 'true') {
   // add `ThemeColorReplacer` plugin to webpack plugins
   vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 }
-
 module.exports = vueConfig
