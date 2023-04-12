@@ -140,7 +140,8 @@ const vueConfig = {
   // babel-loader no-ignore node_modules/*
   transpileDependencies: [],
 
-  publicPath: '/'
+  publicPath: './'
+  // publicPath: process.env.NODE_ENV === 'production' ? '/ximalive-qa' : '/'
 }
 
 // preview.pro.loacg.com only do not use in your production;
