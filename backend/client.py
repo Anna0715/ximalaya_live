@@ -32,10 +32,15 @@ def getaccountinfo(mode,number):
                 # print(datas)
                 re =requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=datas,
                                          verify=False)
-                uid=json.loads(json.loads(re.text)["content"])["value"]
-                # 再根据uid查询详细信息
-                d=getaccountinfobyuid(uid)
-                data.append(d)
+                content=json.loads(json.loads(re.text)["content"])
+                if "value" in content:
+                    uid=content["value"]
+                    # 再根据uid查询详细信息
+                    d=getaccountinfobyuid(uid)
+                    data.append(d)
+                elif content["present"]==False:
+                    d={"mobile":mobile,"msg":"手机号未注册"}
+                    data.append(d)
         else:
             for uid in number:
                 d=getaccountinfobyuid(uid)
@@ -244,5 +249,5 @@ def open_goods(uid):
         return "fail"
 if __name__ == '__main__':
     # print(certification('565,322',"false","false"))
-    print(getaccountinfo("mobile","16621325482"))
+    print(getaccountinfo("mobile","1662"))
     # print(getaccountinfobyuid("1294839"))
