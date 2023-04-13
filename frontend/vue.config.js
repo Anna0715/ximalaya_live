@@ -140,7 +140,7 @@ const vueConfig = {
   // babel-loader no-ignore node_modules/*
   transpileDependencies: [],
   // 去除打包后的hush值
-  filenameHashing: false,
+  // filenameHashing: false,
   publicPath: '/',
   // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   // 指定打包文件路径

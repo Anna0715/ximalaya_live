@@ -41,8 +41,8 @@ app = Flask(__name__,
             template_folder="./templates",
             static_folder="./templates",
             static_url_path="")#创建一个服务，赋值给APP
-app.config['JSON_AS_ASCII'] = False
 CORS(app,supports_credentials=True)
+app.config['JSON_AS_ASCII'] = False
 datas=Common.get_data()
 # XDCS健康检查端口
 @app.route("/ximalive-qa/healthcheck",methods=['GET'])
