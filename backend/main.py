@@ -65,6 +65,14 @@ def login():
         except Exception as e:
             HTTPException('重定向[{}]失败'.format(redirect_url), e)
             raise HTTPException('重定向[{}]失败！'.format(redirect_url))
+# 查询账号信息
+@app.route('/ximalive-qa/getAccountInfo',methods=['POST'])
+def GetAccountinfo():
+    data = json.loads(request.get_data())
+    mode = data['mode']
+    number = data['number']
+    ress=getaccountinfo(mode,number)
+    return jsonify(ress)
 # 主播实名认证+开通视频&卖货权限
 @app.route('/ximalive-qa/AddVprofileVerify',methods=['POST'])
 def Certification():

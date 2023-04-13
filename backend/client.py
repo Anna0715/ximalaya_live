@@ -3,6 +3,86 @@ import time
 
 from common import Common
 datas=Common.get_data()
+# 所有测试平台接口请求头一致
+# 根据手机号查询uid
+def getaccountinfo(mode,number):
+    global data
+    ress = {}
+    try:
+        number = number.split(',')
+        data = []
+        headers = {
+            'Accept': '*/*',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en-GB;q=0.8,en;q=0.7',
+            'Connection': 'keep-alive',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': 'http://192.168.3.54:8901',
+            'Referer': 'http://192.168.3.54:8901/thriftTester/',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+        # 根据手机号查uid
+        if mode=="mobile":
+            for mobile in number:
+                mobile=str(mobile)
+                param={"mobile":str(mobile),"operator": {"opsUid": 0,"ip": "0"}}
+                datas = {
+                    'params': '{"group":"userservice-facade-ops","scope":"default","url":"","iface":"com.ximalaya.xfm.userservice.facade.ops.thrift.AccountService$Iface","artifactId":"standalone-pom","method":"getUidByMobile","authAapplication":"","isPeakReq":false,"params":%s}'%param,
+                }
+                # print(datas)
+                re =requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=datas,
+                                         verify=False)
+                uid=json.loads(json.loads(re.text)["content"])["value"]
+                # 再根据uid查询详细信息
+                d=getaccountinfobyuid(uid)
+                data.append(d)
+        else:
+            for uid in number:
+                d=getaccountinfobyuid(uid)
+                data.append(d)
+        ress["code"]=200
+        ress["data"]=data
+        ress["message"]="请求成功"
+    except Exception as e:
+        ress["code"] = 400
+        ress["data"] = []
+        ress["message"] = "请求失败"
+    return ress
+def getaccountinfobyuid(uid):
+    d = {}
+    param = {"uid": int(uid)}
+    headers = {
+        'Accept': '*/*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en-GB;q=0.8,en;q=0.7',
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Origin': 'http://192.168.3.54:8901',
+        'Referer': 'http://192.168.3.54:8901/thriftTester/',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+    datas = {
+        'params': '{"group":"account-combine","scope":"default","url":"","iface":"com.ximalaya.account.combine.thrift.AccountCombineFacade$Iface","artifactId":"standalone-pom","method":"accountIntegrationInfo","authAapplication":"","isPeakReq":false,"params":%s}' % param,
+    }
+    re = requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=datas,
+                       verify=False)
+    d["uid"] = int(uid)
+    content = json.loads(json.loads(re.text)["content"])
+    if "info" in content:
+        # 获取其内容转成dict
+        info = json.loads((content['info'])[1:-1])
+        # print(info,'\n',type(info))
+        d["mobile"] = info["mobile"]
+        # 是否加V
+        d["verify"] = info["verifyInfo"]["verify"]
+        # 昵称
+        d["nickname"]=info["nickname"]
+        # 注册时间
+        d["registerTime"]=info["registerTime"]
+        d["msg"]="OK"
+    elif "errorMsg" in content:
+        d["msg"]=content["errorMsg"]
+    return d
 # 主播实名认证
 def certification(uids,isOpenlvb,isOpenGoods):
     uids = uids.split(',')
@@ -18,9 +98,9 @@ def certification(uids,isOpenlvb,isOpenGoods):
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
         'X-Requested-With': 'XMLHttpRequest',
     }
-    for uid in uids:
-        uid = int(uid)
-        try:
+    try:
+        for uid in uids:
+            uid = int(uid)
             di={}
             di["uid"] = uid
             # 生成随机身份证号
@@ -55,10 +135,11 @@ def certification(uids,isOpenlvb,isOpenGoods):
             ress["code"] = 200
             ress["data"] = data
             ress["msg"] = "请求成功"
-        except Exception as e:
-            ress["code"] = 500
-            ress["data"] = []
-            ress["msg"] = "请求失败，请重试"
+    except Exception as e:
+        print(e)
+        ress["code"] = 500
+        ress["data"] = []
+        ress["msg"] = "请求失败，请重试"
     return ress
 # 直播实名认证
 """
@@ -163,4 +244,5 @@ def open_goods(uid):
         return "fail"
 if __name__ == '__main__':
     # print(certification('565,322',"false","false"))
-    Openlv(1304325)
+    print(getaccountinfo("mobile","16621325482"))
+    # print(getaccountinfobyuid("1294839"))
