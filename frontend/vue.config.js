@@ -123,7 +123,7 @@ const vueConfig = {
 
   devServer: {
     // development server port 8000
-    port: 7169
+    port: 8000
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     // proxy: {
     //   '/api': {
@@ -140,7 +140,7 @@ const vueConfig = {
   // babel-loader no-ignore node_modules/*
   transpileDependencies: [],
   // 去除打包后的hush值
-  // filenameHashing: false,
+  filenameHashing: false,
   publicPath: '/',
   // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   // 指定打包文件路径
