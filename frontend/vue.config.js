@@ -141,9 +141,9 @@ const vueConfig = {
   transpileDependencies: [],
   // 去除打包后的hush值
   filenameHashing: false,
-  // 部署到服务器需要打包
+  // 部署到服务器的打包路局需要为/ximalive-qa
   publicPath: '/ximalive-qa',
-  // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  // publicPath: process.env.NODE_ENV === 'development' ? '/ximalive-qa' : '/',
   // 指定打包文件路径
   outputDir: '../backend/templates'
 }
