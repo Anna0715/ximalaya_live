@@ -49,22 +49,22 @@ datas=Common.get_data()
 def healthcheck():
     response=make_response('* xdcs.default.healthCheck: OK\nhealthCheck success')
     return response
-@app.route("/login/")
+@app.route("/")
 def index():
     return render_template('index.html')
 
 # 登陆接口
-@app.route('/login', methods=['GET'])
-def login():
-    redirect_url = request.args.get('redirect_url')
-    if redirect_url is None or len(redirect_url) == 0:
-        HTTPException('redirect_url 参数必传')
-    else:
-        try:
-            return redirect(redirect_url)
-        except Exception as e:
-            HTTPException('重定向[{}]失败'.format(redirect_url), e)
-            raise HTTPException('重定向[{}]失败！'.format(redirect_url))
+# @app.route('/login', methods=['GET'])
+# def login():
+#     redirect_url = request.args.get('redirect_url')
+#     if redirect_url is None or len(redirect_url) == 0:
+#         HTTPException('redirect_url 参数必传')
+#     else:
+#         try:
+#             return redirect(redirect_url)
+#         except Exception as e:
+#             HTTPException('重定向[{}]失败'.format(redirect_url), e)
+#             raise HTTPException('重定向[{}]失败！'.format(redirect_url))
 # 查询账号信息
 @app.route('/getAccountInfo',methods=['POST'])
 def GetAccountinfo():
