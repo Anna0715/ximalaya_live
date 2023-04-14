@@ -45,16 +45,16 @@ CORS(app,supports_credentials=True)
 app.config['JSON_AS_ASCII'] = False
 datas=Common.get_data()
 # XDCS健康检查端口
-@app.route("/ximalive-qa/healthcheck",methods=['GET'])
+@app.route("/healthcheck",methods=['GET'])
 def healthcheck():
     response=make_response('* xdcs.default.healthCheck: OK\nhealthCheck success')
     return response
-@app.route("/ximalive-qa/")
+@app.route("/login/")
 def index():
     return render_template('index.html')
 
 # 登陆接口
-@app.route('/ximalive-qa/login', methods=['GET'])
+@app.route('/login', methods=['GET'])
 def login():
     redirect_url = request.args.get('redirect_url')
     if redirect_url is None or len(redirect_url) == 0:
@@ -66,7 +66,7 @@ def login():
             HTTPException('重定向[{}]失败'.format(redirect_url), e)
             raise HTTPException('重定向[{}]失败！'.format(redirect_url))
 # 查询账号信息
-@app.route('/ximalive-qa/getAccountInfo',methods=['POST'])
+@app.route('/getAccountInfo',methods=['POST'])
 def GetAccountinfo():
     data = json.loads(request.get_data())
     mode = data['mode']
@@ -74,7 +74,7 @@ def GetAccountinfo():
     ress=getaccountinfo(mode,number)
     return jsonify(ress)
 # 主播实名认证+开通视频&卖货权限
-@app.route('/ximalive-qa/AddVprofileVerify',methods=['POST'])
+@app.route('/AddVprofileVerify',methods=['POST'])
 def Certification():
     # app.logger.debug(f'login request payload: {request.get_data()}')
     data = json.loads(request.get_data())
@@ -93,7 +93,7 @@ def Certification():
     ress=certification(uids,isOpenlvb,isOpengoods)
     return jsonify(ress)
 # 创建课程直播
-@app.route('/ximalive-qa/CreateCourseLive',methods=['post'])
+@app.route('/CreateCourseLive',methods=['post'])
 def Create_Course_live():
     data = json.loads(request.get_data())
     uids=data['uid']
