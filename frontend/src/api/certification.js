@@ -5,7 +5,8 @@ import request from '@/utils/request'
 const domainName = 'http://ops.test.ximalaya.com/ximalive-qa'
 const api = {
   addVprofileVerify: '/AddVprofileVerify',
-  createCourseLive: '/CreateCourseLive'
+  createCourseLive: '/CreateCourseLive',
+  getAccountInfo: '/getAccountInfo'
 }
 export default api
 export function addVprofileVerify (parameter) {
@@ -22,6 +23,17 @@ export function addVprofileVerify (parameter) {
 export function createCourseLive (parameter) {
   return request({
     url: domainName + api.createCourseLive,
+    method: 'POST',
+    data: JSON.stringify(parameter),
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    }
+  })
+}
+
+export function getAccountInfo (parameter) {
+  return request({
+    url: domainName + api.getAccountInfo,
     method: 'POST',
     data: JSON.stringify(parameter),
     headers: {

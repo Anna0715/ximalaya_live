@@ -23,16 +23,16 @@ export const asyncRouterMap = [
         meta: { title: 'menu.consumer', keepAlive: false, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
           {
+            path: '/consumer/queryUserInfo',
+            name: 'QueryUserInfo',
+            component: () => import('@/views/consumer/QueryUserInfo'),
+            meta: { title: 'menu.consumer.queryUserInfo', keepAlive: false, permission: ['dashboard'] }
+          },
+          {
             path: '/consumer/certification',
             name: 'Certification',
             component: () => import('@/views/consumer/Certification'),
             meta: { title: 'menu.consumer.certification', keepAlive: false, permission: ['dashboard'] }
-          },
-          {
-            path: '/consumer/videoPermissions',
-            name: 'VideoPermissions',
-            component: () => import('@/views/exception/404'),
-            meta: { title: 'menu.consumer.video-permissions', keepAlive: false, permission: ['dashboard'] }
           }
         ]
       },

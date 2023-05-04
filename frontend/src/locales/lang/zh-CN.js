@@ -5,6 +5,7 @@ import menu from './zh-CN/menu'
 import user from './zh-CN/user'
 import certification from './zh-CN/certification'
 import createCourseLive from './zh-CN/createCourseLive'
+import queryUserInfo from './zh-CN/queryUserInfo'
 
 const components = {
   antLocale: antd,
@@ -23,5 +24,6 @@ export default {
   ...menu,
   ...user,
   ...certification,
-  ...createCourseLive
+  ...createCourseLive,
+  ...queryUserInfo
 }
