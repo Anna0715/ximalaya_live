@@ -43,6 +43,7 @@ def getaccountinfo(mode,number):
                     data.append(d)
         else:
             for uid in number:
+                print(uid)
                 d=getaccountinfobyuid(uid)
                 data.append(d)
         ress["code"]=200
@@ -72,7 +73,9 @@ def getaccountinfobyuid(uid):
     re = requests.post('http://192.168.3.54:8901/thriftTester/v3/invoke.htm', headers=headers, data=datas,
                        verify=False)
     d["uid"] = int(uid)
+    print(re.text)
     content = json.loads(json.loads(re.text)["content"])
+    # print(type(content['info']))
     if "info" in content:
         # 获取其内容转成dict
         info = json.loads((content['info'])[1:-1])
@@ -249,5 +252,6 @@ def open_goods(uid):
         return "fail"
 if __name__ == '__main__':
     # print(certification('565,322',"false","false"))
-    print(getaccountinfo("mobile","1662"))
+    # print(getaccountinfo("uid","1294839,1331,122"))
+    print(getaccountinfobyuid(1294839))
     # print(getaccountinfobyuid("1294839"))
