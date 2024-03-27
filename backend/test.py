@@ -5,5 +5,5 @@ t='[{"buyAlbums":{"canCombine":true,"canTransfer":true,"count":0,"detail":[],"ty
 lis=json.loads(t[1:-1])
 print(lis,'\n',type(lis))
 
-#测试一下,第二次
-# master修改
+#测试一下
+# 测试远程分支
