@@ -6,3 +6,4 @@ lis=json.loads(t[1:-1])
 print(lis,'\n',type(lis))
 
 #测试一下,第二次
+# master修改
